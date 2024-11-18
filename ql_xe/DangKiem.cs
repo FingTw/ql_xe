@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 namespace ql_xe
 {
     internal class DangKiem
-    {
-        public static DateTime TinhThoiGianDangKiemTiepTheo(xe xe)
+    {// Tính hạn đăng kiểm tiếp theo
+        public static DateTime TinhThoiGianDangKiemTiepTheo(xe xe, DateTime? lanDangKiemGanNhat = null)
         {
             DateTime now = DateTime.Now;
-            int yearsUsed = now.Year - xe.NgaySanXuat.Year;
+            DateTime ngaySanXuat = xe.NgaySanXuat;
 
-            if (now.Month < xe.NgaySanXuat.Month || (now.Month == xe.NgaySanXuat.Month && now.Day < xe.NgaySanXuat.Day))
-            {
-                yearsUsed--;
-            }
+            // Nếu chưa từng đăng kiểm, lấy ngày sản xuất làm mốc
+            DateTime lanDangKiemCuoi = lanDangKiemGanNhat ?? ngaySanXuat;
+
+            int yearsUsed = now.Year - ngaySanXuat.Year;
+            if (now < ngaySanXuat.AddYears(yearsUsed)) yearsUsed--;
 
             int chuKyThang = 0;
 
@@ -25,29 +26,44 @@ namespace ql_xe
                 if (oto.SoCho <= 9 && !oto.KinhDoanhVanTai)
                 {
                     if (yearsUsed <= 7)
-                        chuKyThang = 36;
+                    {
+                        chuKyThang = lanDangKiemGanNhat == null ? 36 : 24; // Chu kỳ đầu 36 tháng, sau đó 24 tháng
+                    }
                     else if (yearsUsed <= 20)
-                        chuKyThang = 12;
+                    {
+                        chuKyThang = 12; // Định kỳ 12 tháng
+                    }
                     else
-                        chuKyThang = 6;
+                    {
+                        chuKyThang = 6; // Định kỳ 6 tháng
+                    }
                 }
                 else
                 {
                     if (yearsUsed <= 5)
-                        chuKyThang = 24;
+                    {
+                        chuKyThang = lanDangKiemGanNhat == null ? 24 : 12; // Chu kỳ đầu 24 tháng, sau đó 12 tháng
+                    }
                     else
-                        chuKyThang = 6;
+                    {
+                        chuKyThang = 6; // Định kỳ 6 tháng
+                    }
                 }
             }
             else if (xe is XeTai tai)
             {
                 if (yearsUsed <= 7)
-                    chuKyThang = 24;
+                {
+                    chuKyThang = lanDangKiemGanNhat == null ? 24 : 12; // Chu kỳ đầu 24 tháng, sau đó 12 tháng
+                }
                 else
-                    chuKyThang = 6;
+                {
+                    chuKyThang = 6; // Định kỳ 6 tháng
+                }
             }
 
-            return xe.NgaySanXuat.AddMonths(chuKyThang * ((yearsUsed == 0) ? 1 : yearsUsed / chuKyThang + 1));
+            // Tính hạn đăng kiểm tiếp theo
+            return lanDangKiemCuoi.AddMonths(chuKyThang);
         }
 
         // Tính chi phí đăng kiểm
