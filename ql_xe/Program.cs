@@ -116,12 +116,12 @@ namespace ql_xe
 
                     case 6:
                         // Xuất danh sách biển số xe đẹp
-                        Console.WriteLine("\nDanh sach bien so xe đep:");
+                        Console.WriteLine("Danh sach xe co bien so đep:");
                         foreach (var xe in danhSachXe)
                         {
-                            if (xe.BienSo.Length == 10 && (xe.BienSo.EndsWith("88888") || xe.BienSo.EndsWith("99999")))
+                            if (IsBienSoDep(xe.BienSo))
                             {
-                                Console.WriteLine(xe.BienSo);
+                                Console.WriteLine($"Bien so đep: {xe.BienSo}");
                             }
                         }
                         break;
@@ -140,10 +140,12 @@ namespace ql_xe
 
                     case 8:
                         // Thời gian đăng kiểm sắp tới
-                        Console.WriteLine("\nThoi gian đang kiem sap toi:");
+                        Console.WriteLine("Thong tin đang kiem:");
                         foreach (var xe in danhSachXe)
                         {
-                            Console.WriteLine($"{xe}: {xe.ThoiGianDangKiem():dd/MM/yyyy}");
+                            DateTime nextInspection = DangKiem.TinhThoiGianDangKiemTiepTheo(xe);
+                            decimal price = DangKiem.TinhChiPhiDangKiem(xe);
+                            Console.WriteLine($"Bien so: {xe.BienSo}, Lan đang kiem ke tiep: {nextInspection.ToShortDateString()}, Chi phi: {price:C}");
                         }
                         break;
 
@@ -157,6 +159,21 @@ namespace ql_xe
                 }
             }
         }
-        }
+
+        private static bool IsBienSoDep(string bienSo)
+        {
+                // Phương thức kiểm tra biển số đẹp
+            
+                // Lấy 5 ký tự cuối của biển số
+                string soCuoi = bienSo.Substring(bienSo.Length - 5);
+
+                // Đếm số lần xuất hiện của từng ký tự
+                var count = soCuoi.GroupBy(c => c).Select(g => g.Count());
+
+                // Kiểm tra nếu có ký tự xuất hiện ít nhất 4 lần
+                return count.Any(c => c >= 4);
+            }
+        
+    }
     }
 
