@@ -139,20 +139,21 @@ namespace ql_xe
                         break;
 
                     case 8:
-                        Console.WriteLine("Thông tin kiểm định toàn bộ danh sách xe:");
+                        // Tính toán và hiển thị thông tin kiểm định cho toàn bộ danh sách xe
+                        Console.WriteLine("Thong tin kiem đinh toan bo danh sach xe:");
                         Console.WriteLine(new string('-', 50));
 
                         foreach (var xe in danhSachXe)
                         {
                             // Tính hạn đăng kiểm kế tiếp
-                            DateTime nextInspection = DangKiem.TinhThoiGianDangKiemTiepTheo(xe);
+                            DateTime nextInspection = xe.ThoiGianDangKiem();
 
                             // Tính chi phí đăng kiểm
                             decimal cost = DangKiem.TinhChiPhiDangKiem(xe);
 
                             // In kết quả
                             Console.WriteLine($"Bien so: {xe.BienSo}");
-                            Console.WriteLine($"Loai xe: {(xe is XeOto ? "o to" : "Xe tai")}");
+                            Console.WriteLine($"Loai xe: {(xe is XeOto ? "oto" : "Xe tai")}");
                             Console.WriteLine($"Ngay san xuat: {xe.NgaySanXuat.ToShortDateString()}");
                             Console.WriteLine($"Han đang kiem ke tiep: {nextInspection.ToShortDateString()}");
                             Console.WriteLine($"Chi phi đang kiem: {cost:C}");
