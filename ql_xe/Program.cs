@@ -10,7 +10,34 @@ namespace ql_xe
     {
         static void Main(string[] args)
         {
-            var danhSachXe = new List<xe>();
+
+            List<xe> danhSachXe = new List<xe>
+        {
+            // Xe ô tô
+            new XeOto("79A-12345", new DateTime(2015, 6, 12), 5, false),
+            new XeOto("51B-67890", new DateTime(2020, 10, 15), 7, true),
+            new XeOto("62C-88889", new DateTime(2018, 3, 25), 9, false),
+            new XeOto("30E-45678", new DateTime(2011, 7, 18), 4, false),
+            new XeOto("43A-11122", new DateTime(2013, 11, 20), 16, true),
+            new XeOto("60B-99999", new DateTime(2007, 2, 14), 12, true),
+            new XeOto("49A-33333", new DateTime(2022, 9, 5), 4, false),
+            new XeOto("34B-55555", new DateTime(2010, 1, 10), 10, false),
+            new XeOto("28A-22222", new DateTime(2019, 7, 30), 6, true),
+            new XeOto("92A-44444", new DateTime(2005, 12, 25), 8, true),
+
+            // Xe tải
+            new XeTai("62B-00001", new DateTime(2010, 8, 10), 1.5),
+            new XeTai("60C-12345", new DateTime(2018, 5, 12), 10),
+            new XeTai("65D-99999", new DateTime(2013, 3, 30), 20),
+            new XeTai("61E-55555", new DateTime(2019, 9, 10), 8.5),
+            new XeTai("30G-77777", new DateTime(2022, 2, 25), 5),
+            new XeTai("50H-11111", new DateTime(2017, 11, 3), 3.5),
+            new XeTai("73C-22222", new DateTime(2015, 6, 8), 15),
+            new XeTai("54D-66666", new DateTime(2008, 4, 20), 25),
+            new XeTai("48C-88888", new DateTime(2003, 1, 9), 2),
+            new XeTai("29B-44444", new DateTime(2020, 3, 15), 12.5)
+        };
+
             while (true)
             {
                 Console.WriteLine("\nMenu:");

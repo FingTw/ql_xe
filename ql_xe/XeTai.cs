@@ -8,13 +8,20 @@ namespace ql_xe
 {
     internal class XeTai : xe
     {
-        public float TrongTai { get; set; }
+        private double v;
+
+        public double TrongTai { get; private set; }
 
         // Constructor của xe tải
         public XeTai(string bienSo, DateTime ngaySanXuat, float trongTai)
             : base(bienSo, ngaySanXuat)
         {
             TrongTai = trongTai;
+        }
+
+        public XeTai(string bienSo, DateTime ngaySanXuat, double v) : base(bienSo, ngaySanXuat)
+        {
+            this.v = v;
         }
 
         // Tính thời gian đăng kiểm cho xe tải
@@ -29,7 +36,7 @@ namespace ql_xe
 
         public override string ToString()
         {
-            return base.ToString() + $", Trọng tai: {TrongTai} tan";
+            return base.ToString() + $", Trong tai: {TrongTai} tan";
         }
     }
 
