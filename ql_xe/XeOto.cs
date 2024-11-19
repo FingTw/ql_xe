@@ -22,23 +22,52 @@ namespace ql_xe
         // Tính thời gian đăng kiểm cho xe ô tô
         public override DateTime ThoiGianDangKiem()
         {
-            int tuoi = TinhTuoiXe();
+            DateTime kyDangKiem = NgaySanXuat; // Ngày sản xuất là kỳ kiểm định đầu tiên
+            int tuoi = TinhTuoiXe(); // Tính tuổi xe hiện tại
+            int chuKy; // Chu kỳ kiểm định
+
             if (SoCho <= 9 && !KinhDoanhVanTai)
             {
                 if (tuoi <= 7)
-                    return NgaySanXuat.AddMonths(36); // Chu kỳ đầu 36 tháng
+                    chuKy = 36; // Chu kỳ đầu: 36 tháng
                 else if (tuoi <= 20)
-                    return NgaySanXuat.AddMonths(12); // Định kỳ 12 tháng
+                    chuKy = 12; // Định kỳ: 12 tháng
                 else
-                    return NgaySanXuat.AddMonths(6); // Định kỳ 6 tháng
+                    chuKy = 6; // Định kỳ: 6 tháng
             }
             else
             {
                 if (tuoi <= 5)
-                    return NgaySanXuat.AddMonths(24); // Chu kỳ đầu 24 tháng
+                    chuKy = 24; // Chu kỳ đầu: 24 tháng
                 else
-                    return NgaySanXuat.AddMonths(6); // Định kỳ 6 tháng
+                    chuKy = 6; // Định kỳ: 6 tháng
             }
+
+            // Tính chu kỳ tiếp theo
+            while (kyDangKiem <= DateTime.Now)
+            {
+                if (SoCho <= 9 && !KinhDoanhVanTai)
+                {
+                    if (tuoi <= 7)
+                        chuKy = 24; // Định kỳ: 24 tháng
+                    else if (tuoi <= 20)
+                        chuKy = 12; // Định kỳ: 12 tháng
+                    else
+                        chuKy = 6; // Định kỳ: 6 tháng
+                }
+                else
+                {
+                    if (tuoi <= 5)
+                        chuKy = 12; // Định kỳ: 12 tháng
+                    else
+                        chuKy = 6; // Định kỳ: 6 tháng
+                }
+
+                kyDangKiem = kyDangKiem.AddMonths(chuKy); // Cộng thêm chu kỳ
+                tuoi = kyDangKiem.Year - NgaySanXuat.Year; // Cập nhật tuổi xe
+            }
+
+            return kyDangKiem;
         }
 
         public override string ToString()
